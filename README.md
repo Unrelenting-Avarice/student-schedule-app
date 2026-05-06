@@ -122,8 +122,8 @@ http://localhost:8080
 # Employee Flow
   Login with
   
-  `Username: _________
-  Password: student12`
+  `Username: _________`
+  `Password: student12`
   
   - Click Employee Time Sheet
   - Select time blocks by dragging
@@ -134,8 +134,8 @@ http://localhost:8080
 # Manager Flow
   Login as:
   
-  `Username: manager
-  Password: admin12`
+  `Username: manager`
+  `Password: admin12`
   
   Click Schedule Status
   Select a user schedule
