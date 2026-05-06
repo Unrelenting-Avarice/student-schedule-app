@@ -156,13 +156,16 @@ This app uses plain text files instead of a database.
 
 Each user has a file in:
 
-/saveFiles/<username>.txt
+/saveFiles/username.txt
 
 ## File Format
-Pending
-Mon-1-0
-Mon-1-1
-Tue-3-2
+`Pending`
+
+`Mon-1-0`
+
+`Mon-1-1`
+
+`Tue-3-2`
 ...
 
 # Breakdown:
