@@ -28,6 +28,7 @@ Status is displayed as:
 - Denied
 
 # Manager role can:
+Do anything the user can as well as:
 - Approve schedules
 - Deny schedules
 
