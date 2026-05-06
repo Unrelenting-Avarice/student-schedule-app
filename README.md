@@ -128,6 +128,7 @@ http://localhost:8080
   Login with
   
   `Username: _________`
+  
   `Password: student12`
   
   - Click Employee Time Sheet
@@ -140,6 +141,7 @@ http://localhost:8080
   Login as:
   
   `Username: manager`
+  
   `Password: admin12`
   
   Click Schedule Status
@@ -147,8 +149,9 @@ http://localhost:8080
   View in read-only mode
   Select:
   
-  `✅ Approve
-  ❌ Deny`
+  `✅ Approve`
+  
+  `❌ Deny`
   
 ## Data Storage (Important)
 
