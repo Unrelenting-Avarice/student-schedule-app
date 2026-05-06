@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Buttons</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Schedules to be Audited</h1>
+    <div class="button-container" id="buttonContainer"></div>
+    
+    <button class="btn btn-primary" id="retMenu">Return to Menu</button>
+
+    <script>
+        let fileNames = "{{.Files}}"; // This should be populated with the actual state data from your server
+        fileNames = fileNames.replace(/[\[\]"]+/g, ''); // Remove brackets and quotes if it's a string representation of an array
+
+        const buttonContainer = document.getElementById('buttonContainer');
+        let words = fileNames.split(" "); // Assuming fileNames is a space-separated string of words
+        console.log("File names:", fileNames); // Debugging line to check the value of fileNames
+        console.log("Words:", words[0]); // Debugging line to check the value of words
+
+        words.forEach(word => {
+            const button = document.createElement('button');
+            button.textContent = word;
+            button.onclick = () => { const url = "/view-calendar?file=" + encodeURIComponent(word);
+                console.log("Navigating to URL:", url);
+                calendarView(url);
+            };
+            buttonContainer.appendChild(button);
+        });
+
+        function calendarView(url) {
+            console.log("Navigating to:", url);
+            window.location.href = url;
+            }
+
+    document.getElementById("retMenu").addEventListener("click", function() {window.location.href = "/menu"; });
+    </script>
+</body>
+</html>
