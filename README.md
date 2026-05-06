@@ -51,27 +51,48 @@ Note: This is a simple demo authentication system (no hashing or sessions).
 ## Project Structure
 shift-scheduler/
 ├── main.go                 # Main Go application
+
 ├── go.mod                  # Go module file
+
 ├── go.sum                  # Optional, dependency checksum file
+
 ├── static/                 # All CSS, JS, images
+
 │   ├── app.js
+
 │   └── style.css
+
 ├── templates/              # HTML templates
+
 │   ├── login.html
+
 │   ├── menu.html
+
 │   ├── calendar.html
+
 │   └── schedule.html
+
 ├── saveFiles/              # User schedule data (text files)
+
 │   ├── cameronS.txt
+
 │   ├── lazyLary.txt
+
 │   ├── pendingPenny.txt
+
 │   └── sallySmith.txt
+
 ├── handlers/               # Optional: Go code split by functionality
+
 │   ├── auth.go
+
 │   ├── schedule.go
+
 │   └── manager.go
+
 ├── utils/                  # Optional: helper functions
 │   └── fileops.go
+
 └── README.md               # Documentation
     
 ## Setup & Installation
