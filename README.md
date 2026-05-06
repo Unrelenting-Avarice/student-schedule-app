@@ -38,12 +38,14 @@ Status is displayed as:
 
 ## Authentication (Basic)
 Student login
+
   `Username: _________*`
   
   `Password: student12`
 * The students username can be anything teh first time, as it will create for them a personal save file
 
 Manager login
+
   `Username: manager`
   
   `Password: admin12`
