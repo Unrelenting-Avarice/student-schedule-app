@@ -38,13 +38,15 @@ Status is displayed as:
 
 ## Authentication (Basic)
 Student login
-  Username: _________*
-  Password: student12
+  `Username: _________*`
+  
+  `Password: student12`
 * The students username can be anything teh first time, as it will create for them a personal save file
 
 Manager login
-  Username: manager
-  Password: admin12
+  `Username: manager`
+  
+  `Password: admin12`
 
 Note: This is a simple demo authentication system (no hashing or sessions).
 
