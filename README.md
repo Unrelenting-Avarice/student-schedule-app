@@ -38,9 +38,9 @@ Status is displayed as:
 
 ## Authentication (Basic)
 Student login
-  Username: [Anything]*
+  Username: _________*
   Password: student12
-* The students username create for them a personal save file
+* The students username can be anything teh first time, as it will create for them a personal save file
 
 Manager login
   Username: manager
@@ -102,7 +102,7 @@ Make sure you have Go installed:
 
 `go version`
 
-If not, download from: https://go.dev/dl/
+If not, download from Go's [Official Website](https://go.dev/dl/)
 
 #2. Clone the Repository
 
