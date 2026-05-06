@@ -42,7 +42,8 @@ Student login
   `Username: _________*`
   
   `Password: student12`
-* The students username can be anything teh first time, as it will create for them a personal save file
+  
+  _The students username can be anything teh first time, as it will create for them a personal save file_
 
 Manager login
 
