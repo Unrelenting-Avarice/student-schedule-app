@@ -49,8 +49,8 @@ Manager login
 Note: This is a simple demo authentication system (no hashing or sessions).
 
 ## Project Structure
-shift-scheduler/
-├── main.go
+`shift-scheduler/
+├── main.goB
 ├── go.mod
 ├── static/
 │   ├── app.js
@@ -64,7 +64,7 @@ shift-scheduler/
     ├── cameronS.txt
     ├── lazyLary.txt
     ├── pendingPenny.txt
-    └── sallySmith.txt
+    └── sallySmith.txt`
     
 ## Setup & Installation
 #1. Install Go
