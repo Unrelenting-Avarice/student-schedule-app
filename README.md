@@ -21,6 +21,7 @@ Invalid selections are visually highlighted and prevented from submission.
 
 ## Submission & Approval Flow
 Users submit schedules for review
+
 Status is displayed as:
 - Pending
 - Approved
