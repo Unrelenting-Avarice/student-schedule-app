@@ -105,10 +105,11 @@ Make sure you have Go installed:
 
 If not, download from Go's [Official Website](https://go.dev/dl/)
 
-#2. Clone the Repository
+#2. Clone the Repository and enter its directory
 
-`git clone <your-repo-url>
-cd shift-scheduler`
+`git clone [<your-repo-url>](https://github.com/Unrelenting-Avarice/tutorial-github.git)`
+
+`cd shift-scheduler`
 
 #3. Run the Application
 
