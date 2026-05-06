@@ -120,12 +120,16 @@ http://localhost:8080
 ## How to Use
 
 # Employee Flow
-  Login with a username + student12
-  Click Employee Time Sheet
-  Select time blocks by dragging
-  Ensure constraints are satisfied
-  Click Save
-  See status: Pending Approval
+  Login with
+  
+  `Username: _________
+  Password: student12`
+  
+  - Click Employee Time Sheet
+  - Select time blocks by dragging
+  - Ensure constraints are satisfied
+  - Click Save
+  - See status: Pending Approval
 
 # Manager Flow
   Login as:
