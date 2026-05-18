@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calendar</title>
+  <link rel="stylesheet" href="/static/style.css">
+
+  <style>
+    body {
+      font-family: Arial;
+    }
+
+    .calendar-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: 100px repeat(11, 1fr);
+    }
+
+    .cell.header { /* Style for header cells (days and hours) */
+      background: #002E5D;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      padding: 6px;
+    }
+
+    .hour-column { /* Container for hour slices */
+      display: flex;
+      width: 100%;
+      height: 40px;
+    }
+
+    .slice { /* Individual hour slice */
+      flex: 1;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+
+    .slice.selected { /* Style for selected slices */
+      background: #0047BA;
+    }
+
+    #counter { /* Style for the counter display */
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="calendar-container">
+
+  {{if eq .Status "Pending"}}
+    <div style="color: orange; font-weight: bold; margin-bottom: 10px;">Schedule Status: Pending Approval</div>
+  {{else if eq .Status "Approved"}}
+    <div style="color: green; font-weight: bold; margin-bottom: 10px;">Schedule Status: Approved</div>
+  {{else if eq .Status "Denied"}}
+    <div style="color: red; font-weight: bold; margin-bottom: 10px;">Schedule Status: Denied</div>
+  {{else if eq .Status "NA"}}
+    <div style="color: black; font-weight: bold; margin-bottom: 10px;"></div>
+  {{end}}
+
+  <div id="daily-counter-container" style="margin-bottom:10px; font-weight:bold;">
+  <span>Daily slices:</span>
+  {{range .Days}}
+    <span class="daily-counter" id="counter-{{.}}" style="margin-left:15px;">{{.}}: 0</span>
+  {{end}}
+  </div>
+
+  <h2>Employee Time Sheet</h2>
+
+  <div class="calendar">
+
+    <div class="cell header"></div>
+
+    {{range .Hours}}
+      <div class="cell header">{{.}}</div>
+    {{end}}
+
+    {{range $day := .Days}}
+      <div class="cell header">{{$day}}</div>
+
+      {{range $hourIdx, $hour := $.Hours}}
+        <div class="hour-column">
+
+          {{range $i := until $.SlicesPerHour}}
+            <div class="slice
+              {{if index $.Selected (printf "%s-%d-%d" $day $hourIdx $i)}}selected{{end}}
+              {{if $.ReadOnly}}readonly{{end}}"
+            data-day="{{$day}}"
+            data-hour="{{$hourIdx}}" 
+            data-slice="{{$i}}">
+            </div>
+          {{end}}
+
+        </div>
+      {{end}}
+
+    {{end}}
+
+  </div>
+  
+  <div id="counter">Selected: 0</div>
+
+  <div class="button-container">
+
+  {{if not .ReadOnly}}
+    <button class="btn btn-primary" id="saveBtn">Save</button>
+  {{end}}
+
+  {{if .ReadOnly}}
+    <button style="background-color:#28a745;"
+            onclick="scheduleApproveDeny('approve')"
+            class="btn btn-primary"
+            id="approveBtn">
+      Approve
+    </button>
+
+    <button style="background-color:#dc3545;"
+            onclick="scheduleApproveDeny('deny')"
+            class="btn btn-primary"
+            id="denyBtn">
+      Deny
+    </button>
+  {{end}}
+
+  <!-- ALWAYS visible -->
+  <button class="btn btn-primary" id="retMenu">Return to Menu</button>
+
+</div>
+
+  <div class="save-status" id="status"></div>
+
+  
+
+</div>
+
+<script>
+  
+  document.addEventListener("DOMContentLoaded", () => {
+
+    const slices = document.querySelectorAll(".slice");
+    const counter = document.getElementById("counter");
+    const saveBtn = document.getElementById("saveBtn");
+    const status = document.getElementById("status");
+
+    const retMenu = document.getElementById("retMenu");
+
+    if (retMenu) {
+        retMenu.addEventListener("click", function () {
+            window.location.href = "/menu";
+        });
+    }
+
+    let isDown = false;
+    let mode = "add";
+    let state = {};
+
+    const readOnly = "{{.ReadOnly}}" === "true";
+
+    if (readOnly) {
+        document.querySelectorAll(".slice").forEach(el => {
+            el.style.pointerEvents = "none";
+        });
+
+      const saveBtn = document.getElementById("saveBtn");
+
+      if (saveBtn) {
+          saveBtn.style.display = "none";
+}
+    }
+
+    function getKey(el) {return `${el.dataset.day}-${el.dataset.hour}-${el.dataset.slice}`;
+    }
+
+    // initialize from pre-selected cells
+    document.querySelectorAll(".slice.selected").forEach(el => {
+      const key = getKey(el);
+      state[key] = true;
+});
+
+    updateCounter();
+
+    function updateCounter() {
+    const selectedCells = document.querySelectorAll(".slice.selected");
+
+    const count = selectedCells.length;
+
+    const hrs = Math.floor(count / 6);
+    const mins = (count % 6) * 10;
+
+    counter.textContent = "Selected: " + hrs + "h " + mins + "m";
+
+    // DAILY COUNTS
+    const dailyCounts = {
+        Mon: 0,
+        Tue: 0,
+        Wed: 0,
+        Thu: 0,
+        Fri: 0
+    };
+
+    selectedCells.forEach(el => {
+        const day = el.dataset.day;
+        if (dailyCounts[day] !== undefined) {
+            dailyCounts[day]++;
+        }
+    });
+
+    ["Mon","Tue","Wed","Thu","Fri"].forEach(day => {
+        const el = document.getElementById(`counter-${day}`);
+        if (!el) return;
+
+        const slices = dailyCounts[day];
+        dailyHours = (slices / 6).toFixed(1);
+        el.textContent = `${day}: ${dailyHours}h`;
+
+        if (slices < 18 || slices > 54) {
+            el.style.color = "red";
+        } else {
+            el.style.color = "green";
+        }
+    });
+}
+
+    function apply(el) {
+      const key = getKey(el);
+
+      if (mode === "add") {
+        el.classList.add("selected");
+        // state[key] = true;
+      } else {
+        el.classList.remove("selected");
+        delete state[key];
+      }
+    }
+
+    slices.forEach((el) => {
+
+      el.addEventListener("mousedown", () => {
+        isDown = true;
+        mode = el.classList.contains("selected") ? "remove" : "add";
+        apply(el);
+        updateCounter();
+      });
+
+      el.addEventListener("mouseover", () => {
+        if (!isDown) return;
+        apply(el);
+        updateCounter();
+      });
+
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDown = false;
+    });
+
+    saveBtn.addEventListener("click", () => {
+
+      const count = document.querySelectorAll(".slice.selected").length;
+      const selected = [];
+
+      if (count < 120) {
+        status.textContent = "You must select at least 20 hrs";
+        return;
+      } else if (count > 240) {
+        status.textContent = "You cannot select more than 40 hrs";
+        return;
+      }
+
+      
+
+      document.querySelectorAll(".slice.selected").forEach(el => {
+        selected.push({
+          day: el.dataset.day,
+          hour: el.dataset.hour,
+          slice: Number(el.dataset.slice)
+        });
+      });
+
+      fetch("/save-selection", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(selected)
+      })
+
+      
+
+      .then(r => r.text())
+      .then(t => {status.innerHTML = `<div style="color: green; font-weight: bold; font-size: 16px;"> Submit Successful - Pending Approval</div>`;
+        })
+      .catch(() => status.textContent = "error");
+
+    });
+
+  });
+
+  document.getElementById("retMenu").addEventListener("click", function() {window.location.href = "/menu"; });
+
+    function scheduleApproveDeny(action) {
+    // Get the file name from the URL query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const file = urlParams.get("file"); // gets ?file=xxx
+
+    if (!file) {
+        alert("No file specified!");
+        return;
+    }
+
+    // Call the modify-status endpoint with fetch
+    fetch(`/modify-status?action=${encodeURIComponent(action)}&file=${encodeURIComponent(file)}`, {
+        method: "POST"
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Schedule " + (action === "approve" ? "approved" : "denied") + " successfully.");
+            //window.location.href = "/menu"; // redirect back to menu
+        } else {
+            response.text().then(text => alert("Failed to modify schedule status: " + text));
+        }
+    })
+    .catch(err => {
+        alert("Error: " + err);
+    });
+}
+</script>
+
+</body>
+</html>
